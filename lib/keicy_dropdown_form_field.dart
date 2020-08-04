@@ -3,8 +3,8 @@ library keicy_dropdown_form_field;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CustomDropDownFormField extends FormField<dynamic> {
-  CustomDropDownFormField({
+class KeicyDropDownFormField extends FormField<dynamic> {
+  KeicyDropDownFormField({
     Key key,
     @required double width,
     @required double height,
@@ -62,8 +62,8 @@ class CustomDropDownFormField extends FormField<dynamic> {
           onSaved: onSaveHandler,
           builder: (FormFieldState<dynamic> state) {
             return MultiProvider(
-              providers: [ChangeNotifierProvider(create: (context) => CustomDropDownFormFieldProvider(value))],
-              child: Consumer<CustomDropDownFormFieldProvider>(
+              providers: [ChangeNotifierProvider(create: (context) => KeicyDropDownFormFieldProvider(value))],
+              child: Consumer<KeicyDropDownFormFieldProvider>(
                 builder: (context, customDropDownFormFieldProvider, _) {
                   WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
                     if (customDropDownFormFieldProvider.isDoneValidate != isDoneValidate) customDropDownFormFieldProvider.setIsDoneValidate(true);
@@ -167,11 +167,11 @@ class CustomDropDownFormField extends FormField<dynamic> {
         );
 }
 
-class CustomDropDownFormFieldProvider extends ChangeNotifier {
-  static CustomDropDownFormFieldProvider of(BuildContext context, {bool listen = false}) =>
-      Provider.of<CustomDropDownFormFieldProvider>(context, listen: listen);
+class KeicyDropDownFormFieldProvider extends ChangeNotifier {
+  static KeicyDropDownFormFieldProvider of(BuildContext context, {bool listen = false}) =>
+      Provider.of<KeicyDropDownFormFieldProvider>(context, listen: listen);
 
-  CustomDropDownFormFieldProvider(value) {
+  KeicyDropDownFormFieldProvider(value) {
     _value = value;
   }
 
