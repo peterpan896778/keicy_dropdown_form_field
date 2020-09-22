@@ -9,7 +9,7 @@ class KeicyDropDownFormField extends FormField<dynamic> {
     @required double width,
     @required double height,
     @required List<Map<String, dynamic>> menuItems,
-    @required Function(dynamic) onChangeHandler,
+    Function(dynamic) onChangeHandler,
     bool isDense: true,
     bool isExpanded: true,
     dynamic value,
