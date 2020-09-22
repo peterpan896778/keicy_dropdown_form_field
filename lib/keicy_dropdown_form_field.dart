@@ -72,11 +72,11 @@ class KeicyDropDownFormField extends FormField<dynamic> {
                   Widget suffixIcon = SizedBox();
                   if (prefixIcons.length != 0 && !state.hasError && customDropDownFormFieldProvider.isDoneValidate)
                     prefixIcon = prefixIcons[0];
-                  else if (prefixIcons.length != 0) prefixIcon = prefixIcons[1] ?? prefixIcons[0];
+                  else if (prefixIcons.length != 0) prefixIcon = prefixIcons.length == 2 ? prefixIcons[1] : prefixIcons[0];
 
                   if (suffixIcons.length != 0 && !state.hasError && customDropDownFormFieldProvider.isDoneValidate)
                     suffixIcon = suffixIcons[0];
-                  else if (suffixIcons.length != 0) suffixIcon = suffixIcons[1] ?? suffixIcons[0];
+                  else if (suffixIcons.length != 0) suffixIcon = suffixIcons.length == 2 ? suffixIcons[1] : suffixIcons[0];
 
                   return Container(
                     width: width,
