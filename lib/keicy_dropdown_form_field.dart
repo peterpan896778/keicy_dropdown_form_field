@@ -19,9 +19,8 @@ class KeicyDropDownFormField extends FormField<dynamic> {
 
     /// label
     String label = "",
-    double labelTextFontSize,
-    double labelColor,
     double labelSpacing = 5,
+    TextStyle labelStyle,
 
     /// icons
     List<Widget> prefixIcons = const [],
@@ -32,22 +31,18 @@ class KeicyDropDownFormField extends FormField<dynamic> {
     double iconSize = 20,
 
     /// border
-    Color fillColor = Colors.white,
+    Color fillColor = Colors.transparent,
     Border border = const Border(bottom: BorderSide(width: 1, color: Colors.black)),
     Border errorBorder = const Border(bottom: BorderSide(width: 1, color: Colors.red)),
     double borderRadius = 0,
     // textfield
     double contentHorizontalPadding = 5,
     double contentVerticalPadding = 5,
-    bool isfixedHeight = true,
-    double itemTextFontSize = 15,
-    Color itemTextColor = Colors.black,
-    double selectedItemTextFontSize,
-    Color selectedItemTextColor,
+    TextStyle itemStyle,
+    TextStyle selectedItemStyle = const TextStyle(fontSize: 15, color: Colors.black),
     Color dropdownColor = Colors.white,
     String hintText = "",
-    double hintTextFontSize,
-    Color hintTextColor = Colors.grey,
+    TextStyle hintStyle = const TextStyle(fontSize: 15, color: Colors.grey),
     bool fixedHeightState = true,
     bool isDoneValidate = false,
   }) : super(
@@ -61,8 +56,13 @@ class KeicyDropDownFormField extends FormField<dynamic> {
           },
           onSaved: onSaveHandler,
           builder: (FormFieldState<dynamic> state) {
+            itemStyle = itemStyle ?? selectedItemStyle;
+            labelStyle = labelStyle ?? selectedItemStyle;
+
             return MultiProvider(
-              providers: [ChangeNotifierProvider(create: (context) => KeicyDropDownFormFieldProvider(value))],
+              providers: [
+                ChangeNotifierProvider(create: (context) => KeicyDropDownFormFieldProvider(value)),
+              ],
               child: Consumer<KeicyDropDownFormFieldProvider>(
                 builder: (context, customDropDownFormFieldProvider, _) {
                   WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -83,15 +83,7 @@ class KeicyDropDownFormField extends FormField<dynamic> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        (label == "")
-                            ? SizedBox()
-                            : Text(
-                                label,
-                                style: TextStyle(
-                                  fontSize: labelTextFontSize ?? itemTextFontSize,
-                                  color: labelColor ?? selectedItemTextColor ?? itemTextColor,
-                                ),
-                              ),
+                        (label == "") ? SizedBox() : Text(label, style: labelStyle),
                         (label == "") ? SizedBox() : SizedBox(height: labelSpacing),
                         Container(
                           width: width,
@@ -111,7 +103,7 @@ class KeicyDropDownFormField extends FormField<dynamic> {
                                   underline: SizedBox(),
                                   items: menuItems
                                       .map((item) => DropdownMenuItem(
-                                            child: new Text(item["text"], style: TextStyle(fontSize: itemTextFontSize, color: itemTextColor)),
+                                            child: new Text(item["text"], style: itemStyle),
                                             value: item["value"],
                                           ))
                                       .toList(),
@@ -119,19 +111,12 @@ class KeicyDropDownFormField extends FormField<dynamic> {
                                     return menuItems.map<Widget>((item) {
                                       return Text(
                                         item["text"],
-                                        style: TextStyle(
-                                          fontSize: selectedItemTextFontSize ?? itemTextFontSize,
-                                          color: selectedItemTextColor ?? itemTextColor,
-                                        ),
+                                        style: selectedItemStyle,
                                       );
                                     }).toList();
                                   },
                                   dropdownColor: dropdownColor,
-                                  hint: Text(
-                                    hintText,
-                                    style:
-                                        TextStyle(fontSize: hintTextFontSize ?? selectedItemTextFontSize ?? itemTextFontSize, color: hintTextColor),
-                                  ),
+                                  hint: Text(hintText, style: hintStyle),
                                   isDense: isDense,
                                   isExpanded: isExpanded,
                                   value: customDropDownFormFieldProvider.value,
@@ -150,13 +135,13 @@ class KeicyDropDownFormField extends FormField<dynamic> {
                         ),
                         (state.hasError)
                             ? Container(
-                                height: (selectedItemTextFontSize ?? itemTextFontSize) + 5,
+                                height: selectedItemStyle.fontSize,
                                 child: Text(
                                   (state.errorText ?? ""),
-                                  style: TextStyle(fontSize: (selectedItemTextFontSize ?? itemTextFontSize) * 0.8, color: Colors.red),
+                                  style: TextStyle(fontSize: selectedItemStyle.fontSize * 0.8, color: Colors.red),
                                 ),
                               )
-                            : (fixedHeightState) ? SizedBox(height: (selectedItemTextFontSize ?? itemTextFontSize) + 5) : SizedBox(),
+                            : (fixedHeightState) ? SizedBox(height: selectedItemStyle.fontSize) : SizedBox(),
                       ],
                     ),
                   );
