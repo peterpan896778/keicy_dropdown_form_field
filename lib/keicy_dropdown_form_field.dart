@@ -138,6 +138,7 @@ class KeicyDropDownFormField extends FormField<dynamic> {
                         (state.hasError)
                             ? Container(
                                 height: selectedItemStyle.fontSize,
+                                alignment: Alignment.centerLeft,
                                 child: Text(
                                   (state.errorText ?? ""),
                                   style: TextStyle(fontSize: selectedItemStyle.fontSize * 0.8, color: Colors.red),
