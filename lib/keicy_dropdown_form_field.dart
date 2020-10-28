@@ -4,49 +4,51 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class KeicyDropDownFormField extends FormField<dynamic> {
-  KeicyDropDownFormField(
-      {Key key,
-      @required double width,
-      @required double height,
-      @required List<Map<String, dynamic>> menuItems,
-      Function(dynamic) onChangeHandler,
-      bool isDense: true,
-      bool isExpanded: true,
-      dynamic value,
-      bool autovalidate: false,
-      FormFieldValidator<dynamic> onValidateHandler,
-      Function onSaveHandler,
+  KeicyDropDownFormField({
+    Key key,
+    @required double width,
+    @required double height,
+    @required List<Map<String, dynamic>> menuItems,
+    Function(dynamic) onChangeHandler,
+    bool isDense: true,
+    bool isExpanded: true,
+    dynamic value,
+    bool autovalidate: false,
+    FormFieldValidator<dynamic> onValidateHandler,
+    Function onSaveHandler,
 
-      /// label
-      String label = "",
-      double labelSpacing = 5,
-      TextStyle labelStyle,
+    /// label
+    String label = "",
+    double labelSpacing = 5,
+    TextStyle labelStyle,
 
-      /// icons
-      List<Widget> prefixIcons = const [],
-      List<Widget> suffixIcons = const [],
-      bool isPrefixIconOutofField = false,
-      bool isSuffixIconOutofField = false,
-      double iconSpacing = 10,
-      double iconSize = 20,
+    /// icons
+    List<Widget> prefixIcons = const [],
+    List<Widget> suffixIcons = const [],
+    bool isPrefixIconOutofField = false,
+    bool isSuffixIconOutofField = false,
+    double iconSpacing = 10,
+    double iconSize = 20,
 
-      /// border
-      Color fillColor = Colors.transparent,
-      Border border = const Border(bottom: BorderSide(width: 1, color: Colors.black)),
-      Border errorBorder = const Border(bottom: BorderSide(width: 1, color: Colors.red)),
-      double borderRadius = 0,
-      // textfield
-      double contentHorizontalPadding = 5,
-      double contentVerticalPadding = 5,
-      TextStyle itemStyle,
-      TextStyle selectedItemStyle = const TextStyle(fontSize: 15, color: Colors.black),
-      Color dropdownColor = Colors.white,
-      String hintText = "",
-      TextStyle hintStyle = const TextStyle(fontSize: 15, color: Colors.grey),
-      bool fixedHeightState = true,
-      bool isDoneValidate = false,
-      FocusNode focusNode})
-      : super(
+    /// border
+    Color fillColor = Colors.transparent,
+    Border border = const Border(bottom: BorderSide(width: 1, color: Colors.black)),
+    Border errorBorder = const Border(bottom: BorderSide(width: 1, color: Colors.red)),
+    double borderRadius = 0,
+    // textfield
+    double contentHorizontalPadding = 5,
+    double contentVerticalPadding = 5,
+    TextStyle itemStyle,
+    TextStyle selectedItemStyle = const TextStyle(fontSize: 15, color: Colors.black),
+    Color dropdownColor = Colors.white,
+    String hintText = "",
+    TextStyle hintStyle = const TextStyle(fontSize: 15, color: Colors.grey),
+    bool fixedHeightState = true,
+    bool isDoneValidate = false,
+    FocusNode focusNode,
+    Color iconEnabledColor,
+    Color iconDisabledColor,
+  }) : super(
           key: key,
           initialValue: value,
           autovalidate: autovalidate,
@@ -123,6 +125,8 @@ class KeicyDropDownFormField extends FormField<dynamic> {
                                   isExpanded: isExpanded,
                                   value: customDropDownFormFieldProvider.value,
                                   iconSize: iconSize,
+                                  iconEnabledColor: iconEnabledColor,
+                                  iconDisabledColor: iconDisabledColor,
                                   onChanged: (value) {
                                     onChangeHandler(value);
                                     customDropDownFormFieldProvider.setValue(value);
