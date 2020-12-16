@@ -29,6 +29,7 @@ class KeicyDropDownFormField extends FormField<dynamic> {
     bool isSuffixIconOutofField = false,
     double iconSpacing = 10,
     double iconSize = 20,
+    Widget icon,
 
     /// border
     Color fillColor = Colors.transparent,
@@ -69,17 +70,20 @@ class KeicyDropDownFormField extends FormField<dynamic> {
               child: Consumer<KeicyDropDownFormFieldProvider>(
                 builder: (context, customDropDownFormFieldProvider, _) {
                   WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-                    if (customDropDownFormFieldProvider.isDoneValidate != isDoneValidate) customDropDownFormFieldProvider.setIsDoneValidate(true);
+                    if (customDropDownFormFieldProvider.isDoneValidate != isDoneValidate)
+                      customDropDownFormFieldProvider.setIsDoneValidate(true);
                   });
                   Widget prefixIcon = SizedBox();
                   Widget suffixIcon = SizedBox();
                   if (prefixIcons.length != 0 && !state.hasError && customDropDownFormFieldProvider.isDoneValidate)
                     prefixIcon = prefixIcons[0];
-                  else if (prefixIcons.length != 0) prefixIcon = prefixIcons.length == 2 ? prefixIcons[1] : prefixIcons[0];
+                  else if (prefixIcons.length != 0)
+                    prefixIcon = prefixIcons.length == 2 ? prefixIcons[1] : prefixIcons[0];
 
                   if (suffixIcons.length != 0 && !state.hasError && customDropDownFormFieldProvider.isDoneValidate)
                     suffixIcon = suffixIcons[0];
-                  else if (suffixIcons.length != 0) suffixIcon = suffixIcons.length == 2 ? suffixIcons[1] : suffixIcons[0];
+                  else if (suffixIcons.length != 0)
+                    suffixIcon = suffixIcons.length == 2 ? suffixIcons[1] : suffixIcons[0];
 
                   return Container(
                     width: width,
@@ -96,11 +100,14 @@ class KeicyDropDownFormField extends FormField<dynamic> {
                             border: (state.hasError) ? errorBorder : border,
                             borderRadius: border.isUniform ? BorderRadius.circular(borderRadius) : null,
                           ),
-                          padding: EdgeInsets.symmetric(horizontal: contentHorizontalPadding, vertical: contentVerticalPadding),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: contentHorizontalPadding, vertical: contentVerticalPadding),
                           child: Row(
                             children: <Widget>[
                               (!isPrefixIconOutofField) ? prefixIcon : SizedBox(),
-                              (!isPrefixIconOutofField && prefixIcons.length != 0) ? SizedBox(width: iconSpacing) : SizedBox(),
+                              (!isPrefixIconOutofField && prefixIcons.length != 0)
+                                  ? SizedBox(width: iconSpacing)
+                                  : SizedBox(),
                               Expanded(
                                 child: DropdownButton(
                                   focusNode: focusNode,
@@ -124,6 +131,7 @@ class KeicyDropDownFormField extends FormField<dynamic> {
                                   isDense: isDense,
                                   isExpanded: isExpanded,
                                   value: customDropDownFormFieldProvider.value,
+                                  icon: icon,
                                   iconSize: iconSize,
                                   iconEnabledColor: iconEnabledColor,
                                   iconDisabledColor: iconDisabledColor,
@@ -134,7 +142,9 @@ class KeicyDropDownFormField extends FormField<dynamic> {
                                   },
                                 ),
                               ),
-                              (!isSuffixIconOutofField && suffixIcons.length != 0) ? SizedBox(width: iconSpacing) : SizedBox(),
+                              (!isSuffixIconOutofField && suffixIcons.length != 0)
+                                  ? SizedBox(width: iconSpacing)
+                                  : SizedBox(),
                               (!isSuffixIconOutofField) ? suffixIcon : SizedBox(),
                             ],
                           ),
