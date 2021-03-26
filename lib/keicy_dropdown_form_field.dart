@@ -8,7 +8,7 @@ class KeicyDropDownFormField extends FormField<dynamic> {
     Key key,
     @required double width,
     @required double height,
-    @required List<Map<String, dynamic>> menuItems,
+    @required List<dynamic> menuItems,
     Function(dynamic) onChangeHandler,
     bool isDense: true,
     bool isExpanded: true,
@@ -150,7 +150,9 @@ class KeicyDropDownFormField extends FormField<dynamic> {
                                   style: TextStyle(fontSize: selectedItemStyle.fontSize * 0.8, color: Colors.red),
                                 ),
                               )
-                            : (fixedHeightState) ? SizedBox(height: selectedItemStyle.fontSize) : SizedBox(),
+                            : (fixedHeightState)
+                                ? SizedBox(height: selectedItemStyle.fontSize)
+                                : SizedBox(),
                       ],
                     ),
                   );
