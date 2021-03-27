@@ -115,7 +115,7 @@ class KeicyDropDownFormField extends FormField<dynamic> {
                                   selectedItemBuilder: (BuildContext context) {
                                     return menuItems.map<Widget>((item) {
                                       return Text(
-                                        item["text"],
+                                        item["text"] ?? item["name"] ?? "",
                                         style: selectedItemStyle,
                                       );
                                     }).toList();
