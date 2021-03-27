@@ -95,7 +95,9 @@ class KeicyDropDownFormField extends FormField<dynamic> {
                           decoration: BoxDecoration(
                             color: fillColor,
                             border: (state.hasError) ? errorBorder : border,
-                            borderRadius: border.isUniform ? BorderRadius.circular(borderRadius) : null,
+                            borderRadius: ((state.hasError && errorBorder.isUniform) || (!state.hasError && border.isUniform))
+                                ? BorderRadius.circular(borderRadius)
+                                : null,
                           ),
                           padding: EdgeInsets.symmetric(horizontal: contentHorizontalPadding, vertical: contentVerticalPadding),
                           child: Row(
