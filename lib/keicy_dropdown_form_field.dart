@@ -108,7 +108,7 @@ class KeicyDropDownFormField extends FormField<dynamic> {
                                   underline: SizedBox(),
                                   items: menuItems
                                       .map((item) => DropdownMenuItem(
-                                            child: new Text(item["text"], style: itemStyle),
+                                            child: new Text(item["text"] ?? item["name"] ?? "", style: itemStyle),
                                             value: item["value"],
                                           ))
                                       .toList(),
