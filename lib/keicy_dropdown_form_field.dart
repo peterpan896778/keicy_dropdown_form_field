@@ -1,191 +1,118 @@
-library keicy_dropdown_form_field;
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class KeicyDropDownFormField extends FormField<dynamic> {
-  KeicyDropDownFormField({
-    Key key,
-    @required double width,
-    @required double height,
-    @required List<dynamic> menuItems,
-    Function(dynamic) onChangeHandler,
-    bool isDense: true,
-    bool isExpanded: true,
-    dynamic value,
-    bool autovalidate: false,
-    FormFieldValidator<dynamic> onValidateHandler,
-    Function onSaveHandler,
+class KeicyDropDownFormField<T> extends StatelessWidget {
+  final FocusNode? focusNode;
+  final List<dynamic>? items;
+  final T? value;
+  final TextStyle? itemStyle;
+  final TextStyle? selectedItemStyle;
+  final Color? dropdownColor;
+  final InputBorder border;
+  final InputBorder? focusedBorder;
+  final InputBorder? disabledBorder;
+  final InputBorder? errorBorder;
+  final InputBorder? focusedErrorBorder;
+  final EdgeInsetsGeometry? contentPadding;
+  final bool? isDense;
+  final bool isCollapsed;
+  final String? hintText;
+  final TextStyle? hintStyle;
+  final String? labelText;
+  final TextStyle? labelStyle;
+  final FloatingLabelBehavior? floatingLabelBehavior;
+  final void Function(T?)? onChanged;
+  final String? Function(T?)? validator;
+  final void Function(T?)? onSaved;
+  final void Function()? onTap;
 
-    /// label
-    String label = "",
-    double labelSpacing = 5,
-    TextStyle labelStyle,
+  const KeicyDropDownFormField({
+    Key? key,
+    this.focusNode,
+    @required this.items,
+    this.value,
+    this.itemStyle,
+    this.selectedItemStyle,
+    this.dropdownColor,
+    this.border = const OutlineInputBorder(),
+    this.focusedBorder,
+    this.disabledBorder,
+    this.errorBorder,
+    this.focusedErrorBorder,
+    this.contentPadding,
+    this.isDense = true,
+    this.isCollapsed = false,
+    this.hintText,
+    this.hintStyle,
+    this.labelText,
+    this.labelStyle,
+    this.floatingLabelBehavior = FloatingLabelBehavior.always,
+    this.onSaved,
+    this.onChanged,
+    this.validator,
+    this.onTap,
+  }) : super(key: key);
 
-    /// icons
-    List<Widget> prefixIcons = const [],
-    List<Widget> suffixIcons = const [],
-    bool isPrefixIconOutofField = false,
-    bool isSuffixIconOutofField = false,
-    double iconSpacing = 10,
-    double iconSize = 20,
-    Widget icon,
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<T>(
+      focusNode: focusNode,
+      items: items!.map((item) {
+        if (item.runtimeType.toString().contains("Map<String, dynamic>")) {
+          return DropdownMenuItem<T>(
+            value: item["value"],
+            child: Text(item["text"], style: itemStyle),
+          );
+        } else {
+          return DropdownMenuItem<T>(
+            value: item,
+            child: Text(item.toString(), style: itemStyle),
+          );
+        }
+      }).toList(),
+      selectedItemBuilder: (BuildContext context) {
+        return items!.map<Widget>((item) {
+          return Text(
+            (item.runtimeType.toString().contains("Map<String, dynamic>")) ? item["text"] : item.toString(),
+            style: selectedItemStyle ?? itemStyle,
+          );
+        }).toList();
+      },
+      value: value,
+      dropdownColor: dropdownColor,
+      decoration: InputDecoration(
+        border: border,
+        focusedBorder: focusedBorder,
+        enabledBorder: border,
+        disabledBorder: disabledBorder,
+        errorBorder: errorBorder,
+        focusedErrorBorder: focusedErrorBorder,
+        contentPadding: contentPadding,
+        isDense: isDense,
+        isCollapsed: isCollapsed,
+        hintText: hintText,
+        hintStyle: hintStyle,
+        labelText: hintText,
+        labelStyle: labelStyle,
+        floatingLabelBehavior: floatingLabelBehavior,
+      ),
+      onChanged: (T? value) {
+        if (onChanged != null) {
+          onChanged!(value);
+        }
+      },
+      validator: (T? value) {
+        if (validator != null) {
+          return validator!(value);
+        }
 
-    /// border
-    Color fillColor = Colors.transparent,
-    Border border = const Border(bottom: BorderSide(width: 1, color: Colors.black)),
-    Border errorBorder = const Border(bottom: BorderSide(width: 1, color: Colors.red)),
-    double borderRadius = 0,
-    // textfield
-    double contentHorizontalPadding = 5,
-    double contentVerticalPadding = 5,
-    TextStyle itemStyle,
-    TextStyle selectedItemStyle = const TextStyle(fontSize: 15, color: Colors.black),
-    Color dropdownColor = Colors.white,
-    String hintText = "",
-    TextStyle hintStyle = const TextStyle(fontSize: 15, color: Colors.grey),
-    bool fixedHeightState = false,
-    bool isDoneValidate = false,
-    FocusNode focusNode,
-    Color iconEnabledColor,
-    Color iconDisabledColor,
-  }) : super(
-          key: key,
-          initialValue: value,
-          autovalidate: autovalidate,
-          validator: (value) {
-            isDoneValidate = true;
-            if (onValidateHandler != null) return onValidateHandler(value);
-            return null;
-          },
-          onSaved: onSaveHandler,
-          builder: (FormFieldState<dynamic> state) {
-            itemStyle = itemStyle ?? selectedItemStyle;
-            labelStyle = labelStyle ?? selectedItemStyle;
-
-            return MultiProvider(
-              providers: [
-                ChangeNotifierProvider(create: (context) => KeicyDropDownFormFieldProvider(value)),
-              ],
-              child: Consumer<KeicyDropDownFormFieldProvider>(
-                builder: (context, customDropDownFormFieldProvider, _) {
-                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-                    if (customDropDownFormFieldProvider.isDoneValidate != isDoneValidate) customDropDownFormFieldProvider.setIsDoneValidate(true);
-                  });
-                  Widget prefixIcon = SizedBox();
-                  Widget suffixIcon = SizedBox();
-                  if (prefixIcons.length != 0 && !state.hasError && customDropDownFormFieldProvider.isDoneValidate)
-                    prefixIcon = prefixIcons[0];
-                  else if (prefixIcons.length != 0) prefixIcon = prefixIcons.length == 2 ? prefixIcons[1] : prefixIcons[0];
-
-                  if (suffixIcons.length != 0 && !state.hasError && customDropDownFormFieldProvider.isDoneValidate)
-                    suffixIcon = suffixIcons[0];
-                  else if (suffixIcons.length != 0) suffixIcon = suffixIcons.length == 2 ? suffixIcons[1] : suffixIcons[0];
-
-                  return Container(
-                    width: width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        (label == "") ? SizedBox() : Text(label, style: labelStyle),
-                        (label == "") ? SizedBox() : SizedBox(height: labelSpacing),
-                        Container(
-                          width: width,
-                          height: height,
-                          decoration: BoxDecoration(
-                            color: fillColor,
-                            border: (state.hasError) ? errorBorder : border,
-                            borderRadius: ((state.hasError && errorBorder.isUniform) || (!state.hasError && border.isUniform))
-                                ? BorderRadius.circular(borderRadius)
-                                : null,
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: contentHorizontalPadding, vertical: contentVerticalPadding),
-                          child: Row(
-                            children: <Widget>[
-                              (!isPrefixIconOutofField) ? prefixIcon : SizedBox(),
-                              (!isPrefixIconOutofField && prefixIcons.length != 0) ? SizedBox(width: iconSpacing) : SizedBox(),
-                              Expanded(
-                                child: DropdownButton(
-                                  focusNode: focusNode,
-                                  underline: SizedBox(),
-                                  items: menuItems
-                                      .map((item) => DropdownMenuItem(
-                                            child: new Text(item["text"] ?? item["name"] ?? "", style: itemStyle),
-                                            value: item["value"],
-                                          ))
-                                      .toList(),
-                                  selectedItemBuilder: (BuildContext context) {
-                                    return menuItems.map<Widget>((item) {
-                                      return Text(
-                                        item["text"] ?? item["name"] ?? "",
-                                        style: selectedItemStyle,
-                                      );
-                                    }).toList();
-                                  },
-                                  dropdownColor: dropdownColor,
-                                  hint: Text(hintText, style: hintStyle),
-                                  isDense: isDense,
-                                  isExpanded: isExpanded,
-                                  value: customDropDownFormFieldProvider.value,
-                                  icon: icon,
-                                  iconSize: iconSize,
-                                  iconEnabledColor: iconEnabledColor,
-                                  iconDisabledColor: iconDisabledColor,
-                                  onChanged: (value) {
-                                    onChangeHandler(value);
-                                    customDropDownFormFieldProvider.setValue(value);
-                                    state.didChange(value);
-                                  },
-                                ),
-                              ),
-                              (!isSuffixIconOutofField && suffixIcons.length != 0) ? SizedBox(width: iconSpacing) : SizedBox(),
-                              (!isSuffixIconOutofField) ? suffixIcon : SizedBox(),
-                            ],
-                          ),
-                        ),
-                        (state.hasError)
-                            ? Container(
-                                height: selectedItemStyle.fontSize,
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  (state.errorText ?? ""),
-                                  style: TextStyle(fontSize: selectedItemStyle.fontSize * 0.8, color: Colors.red),
-                                ),
-                              )
-                            : (fixedHeightState)
-                                ? SizedBox(height: selectedItemStyle.fontSize)
-                                : SizedBox(),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            );
-          },
-        );
-}
-
-class KeicyDropDownFormFieldProvider extends ChangeNotifier {
-  static KeicyDropDownFormFieldProvider of(BuildContext context, {bool listen = false}) =>
-      Provider.of<KeicyDropDownFormFieldProvider>(context, listen: listen);
-
-  KeicyDropDownFormFieldProvider(value) {
-    _value = value;
-  }
-
-  dynamic _value;
-  dynamic get value => _value;
-  void setValue(dynamic value) {
-    if (_value != value) {
-      _value = value;
-    }
-  }
-
-  bool _isDoneValidate = false;
-  bool get isDoneValidate => _isDoneValidate;
-  void setIsDoneValidate(bool isDoneValidate) {
-    if (_isDoneValidate != isDoneValidate) {
-      _isDoneValidate = isDoneValidate;
-    }
+        return null;
+      },
+      onSaved: (T? value) {
+        if (onSaved != null) {
+          onSaved!(value);
+        }
+      },
+      onTap: onTap,
+    );
   }
 }
