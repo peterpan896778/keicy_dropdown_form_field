@@ -72,7 +72,7 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
       selectedItemBuilder: (BuildContext context) {
         return items!.map<Widget>((item) {
           return Text(
-            (item.runtimeType.toString().contains("Map<String, dynamic>")) ? item["text"] : item.toString(),
+            (item.runtimeType.toString() == "String") ? item.toString() : item["text"],
             style: selectedItemStyle ?? itemStyle,
           );
         }).toList();
