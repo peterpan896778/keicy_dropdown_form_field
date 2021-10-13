@@ -57,15 +57,15 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
     return DropdownButtonFormField<T>(
       focusNode: focusNode,
       items: items!.map((item) {
-        if (item.runtimeType.toString().contains("Map<String, dynamic>")) {
-          return DropdownMenuItem<T>(
-            value: item["value"],
-            child: Text(item["text"], style: itemStyle),
-          );
-        } else {
+        if (item.runtimeType.toString() == "String") {
           return DropdownMenuItem<T>(
             value: item,
             child: Text(item.toString(), style: itemStyle),
+          );
+        } else {
+          return DropdownMenuItem<T>(
+            value: item["value"],
+            child: Text(item["text"], style: itemStyle),
           );
         }
       }).toList(),
