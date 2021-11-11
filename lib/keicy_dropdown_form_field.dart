@@ -91,7 +91,7 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
         isCollapsed: isCollapsed,
         hintText: hintText,
         hintStyle: hintStyle,
-        labelText: hintText,
+        labelText: labelText,
         labelStyle: labelStyle,
         floatingLabelBehavior: floatingLabelBehavior,
       ),
