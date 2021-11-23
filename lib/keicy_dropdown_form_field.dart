@@ -24,6 +24,7 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
   final Color? iconDisabledColor;
   final double? iconSize;
   final FloatingLabelBehavior? floatingLabelBehavior;
+  final bool? disabled;
   final void Function(T?)? onChanged;
   final String? Function(T?)? validator;
   final void Function(T?)? onSaved;
@@ -54,6 +55,7 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
     this.iconDisabledColor,
     this.iconSize,
     this.floatingLabelBehavior = FloatingLabelBehavior.always,
+    this.disabled = false,
     this.onSaved,
     this.onChanged,
     this.validator,
@@ -107,11 +109,13 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
       iconDisabledColor: iconDisabledColor,
       iconEnabledColor: iconEnabledColor,
       iconSize: iconSize ?? 24,
-      onChanged: (T? value) {
-        if (onChanged != null) {
-          onChanged!(value);
-        }
-      },
+      onChanged: disabled!
+          ? null
+          : (T? value) {
+              if (onChanged != null) {
+                onChanged!(value);
+              }
+            },
       validator: (T? value) {
         if (validator != null) {
           return validator!(value);
