@@ -64,6 +64,48 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    InputBorder _border;
+    InputBorder _disabledBorder;
+    InputBorder _focusedBorder;
+    InputBorder _errorBorder;
+    InputBorder _focusedErrorBorder;
+
+    _border = border;
+
+    if (disabledBorder == null) {
+      _disabledBorder = _border;
+      _disabledBorder = _disabledBorder.copyWith(
+        borderSide: _disabledBorder.borderSide.copyWith(color: Colors.grey.withOpacity(0.7)),
+      );
+    } else {
+      _disabledBorder = disabledBorder!;
+    }
+
+    if (focusedBorder == null) {
+      _focusedBorder = _border;
+      _focusedBorder = _focusedBorder.copyWith(
+        borderSide: _focusedBorder.borderSide.copyWith(width: 1.5),
+      );
+    } else {
+      _focusedBorder = focusedBorder!;
+    }
+
+    if (errorBorder == null) {
+      _errorBorder = _border;
+      _errorBorder = _errorBorder.copyWith(borderSide: _errorBorder.borderSide.copyWith(color: Colors.red));
+    } else {
+      _errorBorder = errorBorder!;
+    }
+
+    if (focusedErrorBorder == null) {
+      _focusedErrorBorder = _errorBorder;
+      _focusedErrorBorder = _focusedErrorBorder.copyWith(
+        borderSide: _focusedErrorBorder.borderSide.copyWith(width: 1.5),
+      );
+    } else {
+      _focusedErrorBorder = focusedErrorBorder!;
+    }
+
     return DropdownButtonFormField<T>(
       focusNode: focusNode,
       items: items!.map((item) {
@@ -90,12 +132,12 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
       value: value,
       dropdownColor: dropdownColor,
       decoration: InputDecoration(
-        border: border,
-        focusedBorder: focusedBorder,
-        enabledBorder: border,
-        disabledBorder: disabledBorder,
-        errorBorder: errorBorder,
-        focusedErrorBorder: focusedErrorBorder,
+        border: _border,
+        focusedBorder: _focusedBorder,
+        enabledBorder: _border,
+        disabledBorder: _disabledBorder,
+        errorBorder: _errorBorder,
+        focusedErrorBorder: _focusedErrorBorder,
         contentPadding: contentPadding,
         isDense: isDense,
         isCollapsed: isCollapsed,
