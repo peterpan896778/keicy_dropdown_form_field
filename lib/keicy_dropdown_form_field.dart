@@ -126,6 +126,8 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
           return Text(
             (item.runtimeType.toString() == "String") ? item.toString() : item["text"],
             style: selectedItemStyle ?? itemStyle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           );
         }).toList();
       },
