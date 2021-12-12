@@ -23,6 +23,7 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
   final Color? iconEnabledColor;
   final Color? iconDisabledColor;
   final double? iconSize;
+  final double? maxWidth;
   final FloatingLabelBehavior? floatingLabelBehavior;
   final bool? disabled;
   final void Function(T?)? onChanged;
@@ -54,6 +55,7 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
     this.iconEnabledColor,
     this.iconDisabledColor,
     this.iconSize,
+    this.maxWidth,
     this.floatingLabelBehavior = FloatingLabelBehavior.always,
     this.disabled = false,
     this.onSaved,
@@ -123,11 +125,16 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
       }).toList(),
       selectedItemBuilder: (BuildContext context) {
         return items!.map<Widget>((item) {
-          return Text(
-            (item.runtimeType.toString() == "String") ? item.toString() : item["text"],
-            style: selectedItemStyle ?? itemStyle,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+          return Container(
+            constraints: BoxConstraints(
+              maxWidth: maxWidth ?? double.infinity,
+            ),
+            child: Text(
+              (item.runtimeType.toString() == "String") ? item.toString() : item["text"],
+              style: selectedItemStyle ?? itemStyle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           );
         }).toList();
       },
