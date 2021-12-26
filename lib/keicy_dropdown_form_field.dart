@@ -19,7 +19,7 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
   final TextStyle? hintStyle;
   final String? labelText;
   final TextStyle? labelStyle;
-  final bool isImpot;
+  final bool isImport;
   final Widget? icon;
   final Color? iconEnabledColor;
   final Color? iconDisabledColor;
@@ -52,7 +52,7 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
     this.hintStyle,
     this.labelText,
     this.labelStyle,
-    this.isImpot = false,
+    this.isImport = false,
     this.icon,
     this.iconEnabledColor,
     this.iconDisabledColor,
@@ -154,20 +154,20 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
         isCollapsed: isCollapsed,
         hintText: hintText,
         hintStyle: hintStyle,
-        label: isImpot && labelText != null
-            ? Wrap(
-                children: [
-                  Text("$labelText", style: labelStyle),
-                  Text(
-                    "  *",
-                    style: labelStyle != null
-                        ? labelStyle!.copyWith(color: Colors.red, fontWeight: FontWeight.bold)
-                        : Theme.of(context).inputDecorationTheme.labelStyle!.copyWith(color: Colors.red, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              )
-            : null,
-        labelText: isImpot && labelText != null ? null : labelText,
+        label: Wrap(
+          children: [
+            Text("$labelText", style: labelStyle),
+            if (isImport && labelText != null)
+              Text(
+                "  *",
+                style: labelStyle != null
+                    ? labelStyle!.copyWith(color: Colors.red, fontWeight: FontWeight.bold)
+                    : Theme.of(context).inputDecorationTheme.labelStyle!.copyWith(color: Colors.red, fontWeight: FontWeight.bold),
+              ),
+          ],
+        ),
+        labelText: null,
+        labelStyle: null,
         floatingLabelBehavior: floatingLabelBehavior,
       ),
       icon: icon,
