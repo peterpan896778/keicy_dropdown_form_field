@@ -154,18 +154,20 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
         isCollapsed: isCollapsed,
         hintText: hintText,
         hintStyle: hintStyle,
-        label: Wrap(
-          children: [
-            Text("$labelText", style: labelStyle),
-            if (isImport && labelText != null)
-              Text(
-                "  *",
-                style: labelStyle != null
-                    ? labelStyle!.copyWith(color: Colors.red, fontWeight: FontWeight.bold)
-                    : Theme.of(context).inputDecorationTheme.labelStyle!.copyWith(color: Colors.red, fontWeight: FontWeight.bold),
-              ),
-          ],
-        ),
+        label: labelText != null
+            ? Wrap(
+                children: [
+                  Text("$labelText", style: labelStyle),
+                  if (isImport && labelText != null)
+                    Text(
+                      "  *",
+                      style: labelStyle != null
+                          ? labelStyle!.copyWith(color: Colors.red, fontWeight: FontWeight.bold)
+                          : Theme.of(context).inputDecorationTheme.labelStyle!.copyWith(color: Colors.red, fontWeight: FontWeight.bold),
+                    ),
+                ],
+              )
+            : null,
         labelText: null,
         labelStyle: null,
         floatingLabelBehavior: floatingLabelBehavior,
