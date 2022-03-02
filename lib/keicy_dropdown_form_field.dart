@@ -7,6 +7,7 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
   final TextStyle? itemStyle;
   final TextStyle? selectedItemStyle;
   final Color? dropdownColor;
+  final Color? focusColor;
   final InputBorder border;
   final InputBorder? focusedBorder;
   final InputBorder? disabledBorder;
@@ -40,6 +41,7 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
     this.itemStyle,
     this.selectedItemStyle,
     this.dropdownColor,
+    this.focusColor,
     this.border = const OutlineInputBorder(),
     this.focusedBorder,
     this.disabledBorder,
@@ -142,6 +144,7 @@ class KeicyDropDownFormField<T> extends StatelessWidget {
       },
       value: value,
       dropdownColor: dropdownColor,
+      focusColor: focusColor,
       decoration: InputDecoration(
         border: _border,
         focusedBorder: _focusedBorder,
